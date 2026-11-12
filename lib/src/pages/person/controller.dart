@@ -56,6 +56,13 @@ class PersonController extends GetxController
       change(null, status: RxStatus.error('error'));
     }
   }
+
+  @override
+  void onClose() {
+    tabController.dispose();
+    animationController.dispose();
+    super.onClose();
+  }
 }
 
 class PersonIndexController extends GetxController

@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:xs/src/utils/platform.dart';
 
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -8,7 +8,7 @@ late PackageInfo packageInfo;
 class AppConfig {
   static RxString version = ''.obs;
   static RxString ua = ''.obs;
-  static const baseUrl = 'https://api.emmmm.eu.org';
+  static const baseUrl = 'https://ani.emmmm.eu.org';
   static const bilibiliApiProxyUrl = 'https://bili-dm.emmmm.eu.org';
   static const qqVideoApiUrl = 'https://dm.video.qq.com';
 

@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:xs/src/utils/platform.dart';
 
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';

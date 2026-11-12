@@ -1,4 +1,5 @@
-import 'dart:io';
+import 'dart:io' hide Platform;
+import 'package:xs/src/utils/platform.dart';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
@@ -111,6 +112,7 @@ class LogFileWriter {
   }
   IOSink? fileWriter;
   void initFile() async {
+    if (kIsWeb) return;
     var supportDir = await getApplicationSupportDirectory();
     var logDir = Directory('${supportDir.path}/log');
     if (!await logDir.exists()) {

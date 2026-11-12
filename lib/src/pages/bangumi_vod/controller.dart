@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -124,24 +125,40 @@ class BangumiVodPageController extends PlayerController
     super.onInit();
   }
 
+  // 页面初始化只执行一次：GetBuilder 的 builder 每次重建都会调用，
+  // 之前每次重建都会重复请求数据并叠加播放器监听，造成内存泄漏。
+  bool _pageInitialized = false;
+  void initPageOnce(void Function() init) {
+    if (_pageInitialized) return;
+    _pageInitialized = true;
+    init();
+  }
+
+  final List<StreamSubscription> _pageSubscriptions = [];
+
   void listen() {
     int position = 0;
     int inSeconds = 0;
 
-    player.stream.error.listen((event) {
+    for (final s in _pageSubscriptions) {
+      s.cancel();
+    }
+    _pageSubscriptions.clear();
+
+    _pageSubscriptions.add(player.stream.error.listen((event) {
       // if (RegExp('Failed to open').hasMatch(event)) {
       //   SmartDialog.showToast(event);
       // }
       SmartDialog.showToast('播放失败: $event');
-    });
+    }));
 
-    player.stream.completed.listen((event) {
+    _pageSubscriptions.add(player.stream.completed.listen((event) {
       if (event) {
         showControls();
       }
-    });
+    }));
 
-    player.stream.playing.listen((event) {
+    _pageSubscriptions.add(player.stream.playing.listen((event) {
       playing(player.state.playing);
       showDanmakuState.value = DanmakuSettingsStorage.danmakuEnable.value;
       bilibiliDanmakuState.value =
@@ -160,9 +177,9 @@ class BangumiVodPageController extends PlayerController
           danmakuController!.pause();
         }
       }
-    });
+    }));
 
-    player.stream.position.listen((event) async {
+    _pageSubscriptions.add(player.stream.position.listen((event) async {
       int currentinSeconds = event.inSeconds;
       if (currentinSeconds > 0 && lastPosition.value > 0) {
         final thisLastPosition = Duration(seconds: lastPosition.value);
@@ -293,7 +310,7 @@ class BangumiVodPageController extends PlayerController
           }
         }
       }
-    });
+    }));
   }
 
   // 番剧数据
@@ -1094,6 +1111,14 @@ class BangumiVodPageController extends PlayerController
   @override
   void onClose() {
     WidgetsBinding.instance.removeObserver(this);
+    for (final s in _pageSubscriptions) {
+      s.cancel();
+    }
+    _pageSubscriptions.clear();
+    tabController.dispose();
+    animationController.dispose();
+    playListScrollController.dispose();
+    playListScrollController2.dispose();
     danmakuController = null;
     leave(true);
     super.onClose();

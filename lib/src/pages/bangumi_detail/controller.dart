@@ -317,9 +317,10 @@ class BangumiDetailController extends GetxController
   }
 
   @override
-  void dispose() {
+  void onClose() {
     tabController.dispose();
-    super.dispose();
+    animationController.dispose();
+    super.onClose();
   }
 }
 

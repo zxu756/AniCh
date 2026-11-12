@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:io' hide Platform;
+import 'package:xs/src/utils/platform.dart';
 import 'dart:math';
 
 import 'package:auto_orientation/auto_orientation.dart';

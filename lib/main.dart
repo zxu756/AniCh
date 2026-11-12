@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:xs/src/utils/platform.dart';
 import 'dart:ui';
 
 import 'package:dynamic_color/dynamic_color.dart';
@@ -50,14 +50,16 @@ void main() async {
   runApp(const MyApp());
 }
 
+// 全局键盘监听只用一个 FocusNode，避免每次重建新建且不释放
+final FocusNode _rootKeyboardFocusNode = FocusNode();
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // 检测更新
-    Utils.checkUpdate();
+    // 本地源码构建：不在启动时检测更新（设置页仍可手动检查）
     // 获取用户信息
     final box = GetStorage();
     final token = box.read('token');
@@ -142,7 +144,7 @@ class MyApp extends StatelessWidget {
                       ),
                     },
                     child: KeyboardListener(
-                      focusNode: FocusNode(),
+                      focusNode: _rootKeyboardFocusNode,
                       onKeyEvent: (KeyEvent event) async {
                         if (event is KeyDownEvent &&
                             event.logicalKey == LogicalKeyboardKey.escape) {

@@ -14,4 +14,10 @@ class ProfilePageController extends GetxController
       duration: const Duration(milliseconds: 500),
     );
   }
+
+  @override
+  void onClose() {
+    animationController.dispose();
+    super.onClose();
+  }
 }

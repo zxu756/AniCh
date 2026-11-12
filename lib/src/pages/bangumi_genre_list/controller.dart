@@ -134,4 +134,10 @@ class BangumiGenreListController extends GetxController
     }
     return true;
   }
+
+  @override
+  void onClose() {
+    animationController.dispose();
+    super.onClose();
+  }
 }

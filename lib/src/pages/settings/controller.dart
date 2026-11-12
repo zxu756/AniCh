@@ -16,9 +16,9 @@ class ThemeSettingsPageController extends GetxController
   }
 
   @override
-  void dispose() {
+  void onClose() {
     animationController.dispose();
-    super.dispose();
+    super.onClose();
   }
 }
 
@@ -37,9 +37,9 @@ class AccountSettingsPageController extends GetxController
   }
 
   @override
-  void dispose() {
+  void onClose() {
     animationController.dispose();
-    super.dispose();
+    super.onClose();
   }
 }
 
@@ -58,9 +58,9 @@ class DanmakuSettingsPageController extends GetxController
   }
 
   @override
-  void dispose() {
+  void onClose() {
     animationController.dispose();
-    super.dispose();
+    super.onClose();
   }
 }
 
@@ -79,9 +79,9 @@ class PlayHistorySettingsPageController extends GetxController
   }
 
   @override
-  void dispose() {
+  void onClose() {
     animationController.dispose();
-    super.dispose();
+    super.onClose();
   }
 }
 
@@ -100,8 +100,8 @@ class InfoSettingsPageController extends GetxController
   }
 
   @override
-  void dispose() {
+  void onClose() {
     animationController.dispose();
-    super.dispose();
+    super.onClose();
   }
 }

@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:xs/src/utils/platform.dart';
 import 'dart:math';
 
 import 'package:floating/floating.dart';
@@ -42,19 +42,21 @@ class BangumiVodPageState extends State<BangumiVodPage> {
         id: Get.currentRoute,
         init: BangumiVodPageController(pId: id, pEpisode: episode),
         builder: (controller) {
-          if (data != null) {
-            controller.setBangumiData(data);
-          } else {
-            controller.getBangumiData();
-          }
-          if (episodes != null) {
-            controller.setBangumiEpisodes(episodes);
-          } else {
-            controller.getBangumiEpisodes();
-          }
-          if (mounted) {
-            controller.listen();
-          }
+          controller.initPageOnce(() {
+            if (data != null) {
+              controller.setBangumiData(data);
+            } else {
+              controller.getBangumiData();
+            }
+            if (episodes != null) {
+              controller.setBangumiEpisodes(episodes);
+            } else {
+              controller.getBangumiEpisodes();
+            }
+            if (mounted) {
+              controller.listen();
+            }
+          });
           final page = Obx(() {
             if (controller.fullScreenState.value) {
               return PopScope(
